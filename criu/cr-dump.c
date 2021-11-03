@@ -1874,6 +1874,7 @@ static int cr_pre_dump_finish(int status)
 			pr_err("Can't cure local: something happened with mapping?\n");
 	}
 
+	free_freezer_real_states();
 	free_pstree(root_item);
 	seccomp_free_entries();
 
@@ -2085,6 +2086,7 @@ static int cr_dump_finish(int ret)
 		return -1;
 	pstree_switch_state(root_item, (ret || post_dump_ret) ? TASK_ALIVE : opts.final_state);
 	timing_stop(TIME_FROZEN);
+	free_freezer_real_states();
 	free_pstree(root_item);
 	seccomp_free_entries();
 	free_file_locks();
